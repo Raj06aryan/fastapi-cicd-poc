@@ -1,0 +1,15 @@
+services:
+  fastapi:
+    build: .
+    container_name: fastapi-demo
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-demo
+    ports:
+      - "6379:6379"
+      
