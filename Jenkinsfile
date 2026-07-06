@@ -2,16 +2,16 @@ pipeline{
     agent any
 
     stages{
-        stage('checkout'){
-            steps{
-                checkout scm
-            }
-        }
 
         stage('Install Dependencies'){
             steps{
-                sh 'python3 -m venv .venv'
-                sh '. .venv/bin/activate && pip install -r requirements.txt'
+                sh '''
+                    rm -rf .venv
+                    python3 -m venv .venv
+                    .venv/bin/python -m pip install --upgrade pip
+                    .venv/bin/python -m pip install -r requirements.txt
+
+                '''
             }
         }
 
@@ -23,11 +23,14 @@ pipeline{
 
         stage('Build Docker Image'){
             steps{
-                sh 'docker build -t fastapi-cicd:latest .'
+                sh 'docker build -t fastapi-cicd:${BUILD_NUMBER} .'
             }
         }
 
         stage('Deploy'){
+            when{
+                branch 'main'
+            }
             steps{
                 sh '''
                 docker compose down
@@ -37,8 +40,11 @@ pipeline{
         }
 
         stage('health check'){
+            when{
+                branch 'main'
+            }
             steps{
-                sh 'curl http://localhost:8000/health'
+                sh 'curl --fail --retry 10 --retry-connrefused http://localhost:8000/health'
             }
         }
     }
