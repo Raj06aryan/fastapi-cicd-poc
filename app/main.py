@@ -18,7 +18,7 @@ def health():
         r.ping()
         return {
             "status": "healthy",
-            "redis": "connected"
+            "redis": "connected and everything is working fine"
         }
     except Exception :
         return {
