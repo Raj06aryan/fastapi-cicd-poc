@@ -44,7 +44,7 @@ pipeline{
                 branch 'main'
             }
             steps{
-                sh 'curl --fail --retry 10 --retry-connrefused http://localhost:8000/health'
+                sh 'curl --fail --retry 10 --retry-connrefused http://host.docker.internal:8000/health'
             }
         }
     }
