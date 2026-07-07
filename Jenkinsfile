@@ -33,8 +33,8 @@ pipeline{
             }
             steps{
                 sh '''
-                docker compose down
-                docker compose up -d --build
+                IMAGE_TAG=${BUILD_NUMBER}docker compose down
+                IMAGE_TAG=${BUILD_NUMBER} docker compose up -d 
                 '''
             }
         }
