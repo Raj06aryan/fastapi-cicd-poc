@@ -17,7 +17,7 @@ pipeline{
 
         stage('Run Tests'){
             steps{
-                sh '. .venv/bin/python -m pytest'
+                sh '.venv/bin/python -m pytest'
             }
         }
 
