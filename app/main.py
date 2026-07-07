@@ -10,7 +10,7 @@ r = redis.Redis(
 
 @app.get("/")
 def home():
-    return {"message": "hello world welcome to fastapi cicd pipeline"}
+    return {"message": "hello world welcome to fastapi cicd pipeline hello"}
 
 @app.get("/health")
 def health():
