@@ -1,6 +1,11 @@
 pipeline{
     agent any
 
+    options{
+        timestamps()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
     stages{
 
         stage('Install Dependencies'){
@@ -46,6 +51,13 @@ pipeline{
             steps{
                 sh 'curl --fail --retry 10 --retry-connrefused http://host.docker.internal:8000/health'
             }
+        }
+    }
+
+    post{
+        failure{
+            sh 'docker compose ps || true'
+            sh 'docker compose logs --tail=100 || true'
         }
     }
 }
